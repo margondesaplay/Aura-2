@@ -1,3 +1,71 @@
+aura-social/
+├── .gitignore
+├── index.html
+├── package.json
+├── tailwind.config.js
+├── postcss.config.js
+├── README.md
+└── src/
+    ├── main.jsx
+    ├── index.css
+    └── App.jsx
+1. Arquivos Raiz do Projeto
+.gitignore
+Snippet de código
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+package.json
+JSON
+{
+  "name": "aura-social",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lucide-react": "^0.460.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14",
+    "vite": "^5.4.10"
+  }
+}
+index.html
+HTML
 <!doctype html>
 <html lang="pt-BR" class="dark">
   <head>
@@ -16,3 +84,2889 @@
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
+tailwind.config.js
+JavaScript
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  darkMode: "class",
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+      },
+      colors: {
+        aura: {
+          bg: "#0A0A0A",
+          surface: "#121212",
+          card: "#181818",
+          elevated: "#1E1E1E",
+          border: "#2A2A2A",
+          crimson: "#8B0000",
+          flame: "#DC143C",
+          rose: "#FF2E54",
+        },
+      },
+    },
+  },
+  plugins: [],
+};
+postcss.config.js
+JavaScript
+export default {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};
+README.md
+Markdown
+# 🌶️ AURA — Rede Social +18
+
+Aplicação front-end completa de rede social com tema escuro/vermelho, edição de perfil, chat flutuante e central de mensagens, stories interativos, reações personalizadas e painel administrativo.
+
+## Como rodar localmente
+
+```bash
+npm install
+npm run dev
+Build de produção
+Bash
+npm run build
+Deploy
+Envie este repositório para o GitHub e conecte na Vercel ou Netlify (Framework: Vite, Build Command: npm run build, Output Directory: dist).
+
+
+---
+
+### 2. Arquivos da Pasta `src/`
+
+#### `src/main.jsx`
+```jsx
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+src/index.css
+CSS
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #0a0a0a;
+    color: #f5f5f5;
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Scrollbar discreta estilo dark/crimson */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2b2b2b;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8b0000;
+}
+src/App.jsx
+JavaScript
+import React, { useState, useMemo, useRef, useEffect } from "react";
+import {
+  Flame,
+  Heart,
+  MessageCircle,
+  Share2,
+  Shield,
+  Search,
+  Home,
+  Users,
+  Bell,
+  Settings,
+  Edit3,
+  Camera,
+  CheckCircle2,
+  X,
+  Send,
+  Lock,
+  Eye,
+  EyeOff,
+  Trash2,
+  Ban,
+  AlertTriangle,
+  Sparkles,
+  MapPin,
+  Link2,
+  Plus,
+  Minus,
+  ChevronLeft,
+  ChevronRight,
+  UserCheck,
+  Crown,
+  Smile,
+  LogOut,
+  Check,
+} from "lucide-react";
+
+/**
+ * Ícone customizado de Pimenta Vermelha da marca AURA
+ */
+const ChiliLogo = ({ className = "w-8 h-8" }) => (
+  <svg
+    viewBox="0 0 64 64"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    aria-label="Logo Pimenta Aura"
+  >
+    <defs>
+      <linearGradient id="chiliGrad" x1="12" y1="10" x2="52" y2="56" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FF2E54" />
+        <stop offset="55%" stopColor="#DC143C" />
+        <stop offset="100%" stopColor="#6E0000" />
+      </linearGradient>
+      <linearGradient id="stemGrad" x1="36" y1="6" x2="54" y2="20" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#4ADE80" />
+        <stop offset="100%" stopColor="#15803D" />
+      </linearGradient>
+    </defs>
+    <path
+      d="M44 15C47 10 52 8 56 10C58 11 58 14 55 15C52 16 49 18 47 21"
+      stroke="url(#stemGrad)"
+      strokeWidth="4.5"
+      strokeLinecap="round"
+    />
+    <path d="M40 16C43 13 48 14 50 18C46 19 43 19 40 16Z" fill="#22C55E" />
+    <path
+      d="M47 18C52 24 51 35 43 44C35 53 21 57 10 54C8 53.4 8 50.5 10.2 49.8C20.5 46.8 29.5 40.5 35.5 31.5C38.5 27 40.2 22.5 41.5 18.5C42.2 16.3 45.2 16 47 18Z"
+      fill="url(#chiliGrad)"
+    />
+    <path
+      d="M43.5 23C42 29 37.5 36.5 30 42.5"
+      stroke="#FF8FA3"
+      strokeOpacity="0.55"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+const INITIAL_USERS = [
+  {
+    id: "u1",
+    name: "Valentina Noir",
+    handle: "@valentinanoir",
+    role: "admin",
+    verified18: true,
+    status: "online",
+    mood: "Moderando o clube com um drink e pimenta 🌶️",
+    location: "São Paulo, SP",
+    website: "aura.club/valentinanoir",
+    bio: "Administradora da Aura • Curadoria de ensaios artísticos, festas secretas e comunidade +18 com respeito e intensidade.",
+    avatar:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+    cover:
+      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1400&q=80",
+    tags: ["VIP +18", "Noite Vermelha", "Fotografia", "Curadoria"],
+    followers: 4820,
+    following: 312,
+    banned: false,
+  },
+  {
+    id: "u2",
+    name: "Dante Moreau",
+    handle: "@dantemoreau",
+    role: "user",
+    verified18: true,
+    status: "online",
+    mood: "Pronto pro fim de semana 🔥",
+    location: "Rio de Janeiro, RJ",
+    website: "aura.club/dante",
+    bio: "DJ de deep house, amante de estética dark e conversas sem filtro. Sempre online para boas conexões.",
+    avatar:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    cover:
+      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1400&q=80",
+    tags: ["Deep House", "Lounge", "Conexões", "Noturno"],
+    followers: 1940,
+    following: 428,
+    banned: false,
+  },
+  {
+    id: "u3",
+    name: "Scarlett Velvet",
+    handle: "@scarlettvelvet",
+    role: "user",
+    verified18: true,
+    status: "online",
+    mood: "Novo ensaio vermelho no ar 🌶️✨",
+    location: "Belo Horizonte, MG",
+    website: "aura.club/scarlett",
+    bio: "Modelo alternativa, apaixonada por lingerie, cinema noir e encontros reais com química.",
+    avatar:
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80",
+    cover:
+      "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1400&q=80",
+    tags: ["Ensaios", "Velvet", "Premium", "Arte"],
+    followers: 6310,
+    following: 215,
+    banned: false,
+  },
+  {
+    id: "u4",
+    name: "Kaelen Vance",
+    handle: "@kaelenvance",
+    role: "user",
+    verified18: true,
+    status: "away",
+    mood: "Explorando os bastidores da Aura",
+    location: "Curitiba, PR",
+    website: "aura.club/kaelen",
+    bio: "Produtor visual e frequentador assíduo dos eventos privados. Respeito sempre em primeiro lugar.",
+    avatar:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
+    cover:
+      "https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=1400&q=80",
+    tags: ["Bastidores", "Cinema", "VIP", "Pimenta"],
+    followers: 1120,
+    following: 389,
+    banned: false,
+  },
+];
+
+const INITIAL_STORIES = [
+  {
+    id: "s1",
+    userId: "u3",
+    caption: "Bastidores da noite em vermelho carmesim 🌶️🔥",
+    image:
+      "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=800&q=80",
+    time: "Há 25 min",
+  },
+  {
+    id: "s2",
+    userId: "u2",
+    caption: "Warm-up do set dark electro às 23h — quem cola? 🎧",
+    image:
+      "https://images.unsplash.com/photo-1571266028243-d220c9c08d1f?auto=format&fit=crop&w=800&q=80",
+    time: "Há 1 h",
+  },
+  {
+    id: "s3",
+    userId: "u1",
+    caption: "Regras da casa atualizadas: privacidade e consentimento sempre.",
+    image:
+      "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80",
+    time: "Há 2 h",
+  },
+  {
+    id: "s4",
+    userId: "u4",
+    caption: "Luz baixa, vinho tinto e boa companhia 🍷",
+    image:
+      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80",
+    time: "Há 3 h",
+  },
+];
+
+const INITIAL_POSTS = [
+  {
+    id: "p1",
+    authorId: "u3",
+    createdAt: "Há 32 minutos",
+    content:
+      "Quando o vermelho encontra a penumbra, o clima muda na hora. Liberamos o álbum completo da sessão noturna para quem curte estética intensa e sem pressa 🌶️🔥",
+    image:
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=1000&q=80",
+    isMature: true,
+    reactions: { chili: 148, heart: 92, fire: 67 },
+    userReacted: { chili: false, heart: false, fire: false },
+    comments: [
+      {
+        id: "c1",
+        authorId: "u2",
+        text: "A iluminação desse ensaio ficou absurda, Scarlett!",
+        time: "Há 20 min",
+      },
+      {
+        id: "c2",
+        authorId: "u1",
+        text: "Destaque da semana garantido na Aura 🌶️",
+        time: "Há 12 min",
+      },
+    ],
+  },
+  {
+    id: "p2",
+    authorId: "u2",
+    createdAt: "Há 2 horas",
+    content:
+      "Qual a vibe favorita de vocês numa sexta à noite na Aura: lounge reservado com drinks autorais ou pista pulsante até de madrugada?",
+    image:
+      "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&fit=crop&w=1000&q=80",
+    isMature: false,
+    reactions: { chili: 74, heart: 58, fire: 89 },
+    userReacted: { chili: false, heart: false, fire: false },
+    comments: [
+      {
+        id: "c3",
+        authorId: "u4",
+        text: "Começar no lounge e terminar na pista é o equilíbrio perfeito.",
+        time: "Há 1 h",
+      },
+    ],
+  },
+  {
+    id: "p3",
+    authorId: "u1",
+    createdAt: "Há 4 horas",
+    content:
+      "Aviso da Administração: nossa verificação +18 e moderação ativa garantem um espaço livre, seguro e provocante. Denúncias são analisadas em minutos.",
+    image: null,
+    isMature: false,
+    reactions: { chili: 210, heart: 165, fire: 44 },
+    userReacted: { chili: false, heart: false, fire: false },
+    comments: [],
+  },
+];
+
+const INITIAL_MESSAGES = {
+  u2: [
+    {
+      id: "m1",
+      senderId: "u2",
+      text: "E aí, tudo certo? Vai colar no evento da Aura hoje à noite?",
+      time: "18:05",
+    },
+    {
+      id: "m2",
+      senderId: "me",
+      text: "Com certeza! Chego mais tarde depois de revisar umas coisas por aqui 🌶️",
+      time: "18:07",
+    },
+  ],
+  u3: [
+    {
+      id: "m3",
+      senderId: "u3",
+      text: "Obrigada pelo apoio no meu último post! Ficou bem picante 🔥",
+      time: "17:42",
+    },
+  ],
+  u4: [
+    {
+      id: "m4",
+      senderId: "u4",
+      text: "Consegui as fotos em alta definição do lounge.",
+      time: "16:15",
+    },
+  ],
+};
+
+const INITIAL_REPORTS = [
+  {
+    id: "r1",
+    targetName: "Perfil @anon_fake99",
+    reason: "Suspeita de conta sem verificação +18 válida",
+    reporter: "Dante Moreau",
+    status: "pendente",
+    time: "Há 14 min",
+  },
+  {
+    id: "r2",
+    targetName: "Postagem #409",
+    reason: "Link externo promocional não autorizado",
+    reporter: "Scarlett Velvet",
+    status: "pendente",
+    time: "Há 38 min",
+  },
+];
+
+const AUTO_REPLIES = [
+  "Adorei a mensagem! Me conta mais sobre isso 🌶️",
+  "Tô online por aqui, bora trocar ideia?",
+  "Essa vibe da Aura tá incrível hoje à noite 🔥",
+  "Combinado! Qualquer coisa me chama por aqui.",
+];
+
+export default function App() {
+  // Autenticação / Gate +18
+  const [ageVerified, setAgeVerified] = useState(true);
+  const [authMode, setAuthMode] = useState("login"); // "login" | "register"
+  const [authForm, setAuthForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    birthDate: "1996-05-15",
+  });
+  const [authError, setAuthError] = useState("");
+
+  // Usuários & Usuário logado
+  const [users, setUsers] = useState(INITIAL_USERS);
+  const [currentUserId, setCurrentUserId] = useState("u1"); // Começa logado; pode alternar para u2 (user) ou sair/entrar
+  const currentUser = useMemo(
+    () => users.find((u) => u.id === currentUserId) || users[0],
+    [users, currentUserId]
+  );
+
+  // Navegação principal
+  const [activeTab, setActiveTab] = useState("feed"); // "feed" | "members" | "messages" | "profile" | "admin"
+  const [profileTargetId, setProfileTargetId] = useState("u1");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [feedFilter, setFeedFilter] = useState("all"); // "all" | "mature" | "photos"
+
+  // Feed, Stories e Reações
+  const [posts, setPosts] = useState(INITIAL_POSTS);
+  const [newPostText, setNewPostText] = useState("");
+  const [newPostImage, setNewPostImage] = useState("");
+  const [newPostMature, setNewPostMature] = useState(true);
+  const [revealedPosts, setRevealedPosts] = useState({});
+  const [commentInputs, setCommentInputs] = useState({});
+  const [stories, setStories] = useState(INITIAL_STORIES);
+  const [activeStoryIndex, setActiveStoryIndex] = useState(null);
+  const [storyReply, setStoryReply] = useState("");
+  const [showNewStoryModal, setShowNewStoryModal] = useState(false);
+  const [newStoryCaption, setNewStoryCaption] = useState("");
+  const [newStoryImage, setNewStoryImage] = useState(
+    "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=800&q=80"
+  );
+
+  // Edição de Perfil
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  const [profileForm, setProfileForm] = useState({
+    name: "",
+    bio: "",
+    mood: "",
+    location: "",
+    website: "",
+    avatar: "",
+    cover: "",
+    tagsText: "",
+  });
+
+  // Chat Flutuante & Mensagens
+  const [messagesByUser, setMessagesByUser] = useState(INITIAL_MESSAGES);
+  const [openChatIds, setOpenChatIds] = useState(["u2"]); // até 2 janelas flutuantes abertas
+  const [minimizedChats, setMinimizedChats] = useState({});
+  const [chatDrafts, setChatDrafts] = useState({});
+  const [selectedInboxUserId, setSelectedInboxUserId] = useState("u2");
+  const [inboxDraft, setInboxDraft] = useState("");
+  const [showMsgDropdown, setShowMsgDropdown] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(2);
+
+  // Notificações & Admin
+  const [notifications, setNotifications] = useState([
+    {
+      id: "n1",
+      text: "Scarlett Velvet reagiu com 🌶️ à sua publicação.",
+      time: "Agora",
+      read: false,
+    },
+    {
+      id: "n2",
+      text: "Dante Moreau enviou uma mensagem privada.",
+      time: "Há 10 min",
+      read: false,
+    },
+  ]);
+  const [showNotifDropdown, setShowNotifDropdown] = useState(false);
+  const [reports, setReports] = useState(INITIAL_REPORTS);
+  const [globalNotice, setGlobalNotice] = useState(
+    "Bem-vindos à AURA • Comunidade +18 com moderação ativa e privacidade garantida."
+  );
+  const [toast, setToast] = useState(null);
+
+  const chatEndRefs = useRef({});
+
+  const triggerToast = (msg) => {
+    setToast(msg);
+    setTimeout(() => {
+      setToast((prev) => (prev === msg ? null : prev));
+    }, 3200);
+  };
+
+  useEffect(() => {
+    openChatIds.forEach((uid) => {
+      const el = chatEndRefs.current[uid];
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    });
+  }, [messagesByUser, openChatIds]);
+
+  const getUserById = (id) => {
+    if (id === "me") return currentUser;
+    return users.find((u) => u.id === id) || users[0];
+  };
+
+  // Abrir chat flutuante com usuário
+  const openChatWith = (userId) => {
+    if (userId === currentUser.id) return;
+    setShowMsgDropdown(false);
+    setMinimizedChats((prev) => ({ ...prev, [userId]: false }));
+    setOpenChatIds((prev) => {
+      if (prev.includes(userId)) return prev;
+      const next = [...prev, userId];
+      return next.slice(-2); // mantém até 2 janelas flutuantes lado a lado no desktop
+    });
+  };
+
+  const closeChat = (userId) => {
+    setOpenChatIds((prev) => prev.filter((id) => id !== userId));
+  };
+
+  const toggleMinimizeChat = (userId) => {
+    setMinimizedChats((prev) => ({ ...prev, [userId]: !prev[userId] }));
+  };
+
+  const sendMessageTo = (userId, text) => {
+    const clean = text.trim();
+    if (!clean) return;
+    const nowTime = new Date().toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    const newMsg = {
+      id: `m-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      senderId: "me",
+      text: clean,
+      time: nowTime,
+    };
+
+    setMessagesByUser((prev) => ({
+      ...prev,
+      [userId]: [...(prev[userId] || []), newMsg],
+    }));
+
+    // Resposta automática simulada
+    setTimeout(() => {
+      const replyText =
+        AUTO_REPLIES[Math.floor(Math.random() * AUTO_REPLIES.length)];
+      const replyTime = new Date().toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      setMessagesByUser((prev) => ({
+        ...prev,
+        [userId]: [
+          ...(prev[userId] || []),
+          {
+            id: `m-rep-${Date.now()}`,
+            senderId: userId,
+            text: replyText,
+            time: replyTime,
+          },
+        ],
+      }));
+    }, 1100);
+  };
+
+  const handleSendFloatingChat = (e, userId) => {
+    e.preventDefault();
+    const draft = chatDrafts[userId] || "";
+    if (!draft.trim()) return;
+    sendMessageTo(userId, draft);
+    setChatDrafts((prev) => ({ ...prev, [userId]: "" }));
+  };
+
+  const handleSendInboxMessage = (e) => {
+    e.preventDefault();
+    if (!inboxDraft.trim()) return;
+    sendMessageTo(selectedInboxUserId, inboxDraft);
+    setInboxDraft("");
+  };
+
+  // Criar nova postagem
+  const handleCreatePost = (e) => {
+    e.preventDefault();
+    if (!newPostText.trim() && !newPostImage.trim()) return;
+
+    const post = {
+      id: `p-${Date.now()}`,
+      authorId: currentUser.id,
+      createdAt: "Agora mesmo",
+      content: newPostText.trim(),
+      image: newPostImage.trim() || null,
+      isMature: newPostMature,
+      reactions: { chili: 1, heart: 0, fire: 0 },
+      userReacted: { chili: true, heart: false, fire: false },
+      comments: [],
+    };
+
+    setPosts((prev) => [post, ...prev]);
+    setNewPostText("");
+    setNewPostImage("");
+    setNewPostMature(true);
+    triggerToast("Publicação compartilhada na AURA 🌶️");
+  };
+
+  // Reagir a postagem
+  const handleReaction = (postId, key) => {
+    setPosts((prev) =>
+      prev.map((p) => {
+        if (p.id !== postId) return p;
+        const already = p.userReacted[key];
+        return {
+          ...p,
+          userReacted: { ...p.userReacted, [key]: !already },
+          reactions: {
+            ...p.reactions,
+            [key]: Math.max(0, p.reactions[key] + (already ? -1 : 1)),
+          },
+        };
+      })
+    );
+  };
+
+  // Comentar em postagem
+  const handleAddComment = (e, postId) => {
+    e.preventDefault();
+    const text = (commentInputs[postId] || "").trim();
+    if (!text) return;
+
+    setPosts((prev) =>
+      prev.map((p) => {
+        if (p.id !== postId) return p;
+        return {
+          ...p,
+          comments: [
+            ...p.comments,
+            {
+              id: `c-${Date.now()}`,
+              authorId: currentUser.id,
+              text,
+              time: "Agora",
+            },
+          ],
+        };
+      })
+    );
+    setCommentInputs((prev) => ({ ...prev, [postId]: "" }));
+  };
+
+  // Abrir modal de edição de perfil
+  const openEditProfileModal = (targetUser = currentUser) => {
+    setProfileForm({
+      name: targetUser.name,
+      bio: targetUser.bio,
+      mood: targetUser.mood,
+      location: targetUser.location,
+      website: targetUser.website,
+      avatar: targetUser.avatar,
+      cover: targetUser.cover,
+      tagsText: (targetUser.tags || []).join(", "),
+    });
+    setIsEditProfileOpen(true);
+  };
+
+  const handleSaveProfile = (e) => {
+    e.preventDefault();
+    const parsedTags = profileForm.tagsText
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean)
+      .slice(0, 6);
+
+    setUsers((prev) =>
+      prev.map((u) =>
+        u.id === currentUser.id
+          ? {
+              ...u,
+              name: profileForm.name.trim() || u.name,
+              bio: profileForm.bio.trim(),
+              mood: profileForm.mood.trim(),
+              location: profileForm.location.trim(),
+              website: profileForm.website.trim(),
+              avatar: profileForm.avatar.trim() || u.avatar,
+              cover: profileForm.cover.trim() || u.cover,
+              tags: parsedTags.length ? parsedTags : u.tags,
+            }
+          : u
+      )
+    );
+    setIsEditProfileOpen(false);
+    triggerToast("Perfil atualizado com sucesso!");
+  };
+
+  // Criar novo Story
+  const handleCreateStory = (e) => {
+    e.preventDefault();
+    if (!newStoryImage.trim()) return;
+    const story = {
+      id: `s-${Date.now()}`,
+      userId: currentUser.id,
+      caption: newStoryCaption.trim() || "Momento na AURA 🌶️",
+      image: newStoryImage.trim(),
+      time: "Agora mesmo",
+    };
+    setStories((prev) => [story, ...prev]);
+    setNewStoryCaption("");
+    setShowNewStoryModal(false);
+    triggerToast("Seu Story foi publicado!");
+  };
+
+  // Ações administrativas
+  const handleToggleUserRole = (userId) => {
+    setUsers((prev) =>
+      prev.map((u) =>
+        u.id === userId
+          ? { ...u, role: u.role === "admin" ? "user" : "admin" }
+          : u
+      )
+    );
+    triggerToast("Nível de acesso atualizado.");
+  };
+
+  const handleToggleBanUser = (userId) => {
+    if (userId === currentUser.id) {
+      triggerToast("Você não pode banir sua própria conta ativa.");
+      return;
+    }
+    setUsers((prev) =>
+      prev.map((u) => (u.id === userId ? { ...u, banned: !u.banned } : u))
+    );
+    triggerToast("Status de moderação do membro alterado.");
+  };
+
+  const handleToggleVerify18 = (userId) => {
+    setUsers((prev) =>
+      prev.map((u) =>
+        u.id === userId ? { ...u, verified18: !u.verified18 } : u
+      )
+    );
+    triggerToast("Selo +18 atualizado.");
+  };
+
+  const handleResolveReport = (reportId, action) => {
+    setReports((prev) =>
+      prev.map((r) =>
+        r.id === reportId
+          ? { ...r, status: action === "approve" ? "resolvida" : "descartada" }
+          : r
+      )
+    );
+    triggerToast(
+      action === "approve" ? "Denúncia resolvida pela moderação." : "Denúncia descartada."
+    );
+  };
+
+  const handleDeletePost = (postId) => {
+    setPosts((prev) => prev.filter((p) => p.id !== postId));
+    triggerToast("Publicação removida.");
+  };
+
+  // Login / Cadastro
+  const handleAuthSubmit = (e) => {
+    e.preventDefault();
+    setAuthError("");
+    const birth = new Date(authForm.birthDate);
+    const ageDifMs = Date.now() - birth.getTime();
+    const ageDate = new Date(ageDifMs);
+    const age = Math.abs(ageDate.getUTCFullYear() - 1970);
+
+    if (age < 18) {
+      setAuthError("A AURA é exclusiva para maiores de 18 anos.");
+      return;
+    }
+
+    if (authMode === "register") {
+      if (!authForm.name.trim()) {
+        setAuthError("Informe seu nome ou apelido.");
+        return;
+      }
+      const newId = `u-${Date.now()}`;
+      const created = {
+        id: newId,
+        name: authForm.name.trim(),
+        handle: `@${authForm.name.trim().toLowerCase().replace(/[^a-z0-9]/g, "") || "membro"}`,
+        role: "user",
+        verified18: true,
+        status: "online",
+        mood: "Recém-chegado na AURA 🌶️",
+        location: "Brasil",
+        website: "aura.club/membro",
+        bio: "Novo membro da comunidade AURA.",
+        avatar:
+          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+        cover:
+          "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1400&q=80",
+        tags: ["Novo Membro", "+18", "AURA"],
+        followers: 1,
+        following: 4,
+        banned: false,
+      };
+      setUsers((prev) => [...prev, created]);
+      setCurrentUserId(newId);
+      setProfileTargetId(newId);
+    }
+    setAgeVerified(true);
+    triggerToast("Acesso liberado à AURA 🌶️");
+  };
+
+  const filteredPosts = useMemo(() => {
+    return posts.filter((p) => {
+      if (p.authorId === profileTargetId && activeTab === "profile") return true;
+      const author = getUserById(p.authorId);
+      if (author?.banned) return false;
+      const matchesSearch =
+        !searchQuery.trim() ||
+        p.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        author?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        author?.handle.toLowerCase().includes(searchQuery.toLowerCase());
+
+      if (!matchesSearch) return false;
+      if (feedFilter === "mature") return p.isMature;
+      if (feedFilter === "photos") return Boolean(p.image);
+      return true;
+    });
+  }, [posts, searchQuery, feedFilter, activeTab, profileTargetId, users]);
+
+  const otherUsers = useMemo(
+    () => users.filter((u) => u.id !== currentUser.id && !u.banned),
+    [users, currentUser.id]
+  );
+
+  // Tela de Portão +18 / Login / Registro
+  if (!ageVerified) {
+    return (
+      <div className="min-h-screen bg-[#0A0A0A] text-white flex items-center justify-center p-4 relative overflow-hidden">
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-[#8B0000]/30 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-[#DC143C]/20 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="w-full max-w-md bg-[#141414] border border-[#2B2B2B] rounded-2xl p-7 shadow-2xl relative z-10">
+          <div className="flex flex-col items-center text-center mb-6">
+            <div className="w-16 h-16 rounded-2xl bg-[#1E1014] border border-[#8B0000]/60 flex items-center justify-center mb-3 shadow-lg shadow-[#8B0000]/20">
+              <ChiliLogo className="w-11 h-11" />
+            </div>
+            <h1 className="text-3xl font-extrabold tracking-wider text-white">
+              AURA<span className="text-[#DC143C]">.</span>
+            </h1>
+            <p className="text-xs uppercase tracking-widest text-[#DC143C] font-semibold mt-1">
+              Rede Social Exclusiva +18
+            </p>
+            <p className="text-sm text-neutral-400 mt-2">
+              Ambiente intenso, elegante e moderado para adultos. Confirme sua idade para entrar.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-1 bg-[#0D0D0D] p-1 rounded-xl border border-[#242424] mb-5">
+            <button
+              type="button"
+              onClick={() => {
+                setAuthMode("login");
+                setAuthError("");
+              }}
+              className={`py-2 rounded-lg text-sm font-semibold transition ${
+                authMode === "login"
+                  ? "bg-[#8B0000] text-white"
+                  : "text-neutral-400 hover:text-white"
+              }`}
+            >
+              Entrar
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setAuthMode("register");
+                setAuthError("");
+              }}
+              className={`py-2 rounded-lg text-sm font-semibold transition ${
+                authMode === "register"
+                  ? "bg-[#8B0000] text-white"
+                  : "text-neutral-400 hover:text-white"
+              }`}
+            >
+              Criar Conta +18
+            </button>
+          </div>
+
+          <form onSubmit={handleAuthSubmit} className="space-y-4">
+            {authMode === "register" && (
+              <div>
+                <label className="block text-xs font-medium text-neutral-300 mb-1">
+                  Nome ou Apelido
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Ex: Ravena Noir"
+                  value={authForm.name}
+                  onChange={(e) => setAuthForm({ ...authForm, name: e.target.value })}
+                  className="w-full bg-[#1C1C1C] border border-[#2E2E2E] focus:border-[#DC143C] rounded-xl px-3.5 py-2.5 text-sm outline-none"
+                />
+              </div>
+            )}
+
+            <div>
+              <label className="block text-xs font-medium text-neutral-300 mb-1">
+                E-mail
+              </label>
+              <input
+                type="email"
+                required
+                placeholder="voce@aura.club"
+                value={authForm.email}
+                onChange={(e) => setAuthForm({ ...authForm, email: e.target.value })}
+                className="w-full bg-[#1C1C1C] border border-[#2E2E2E] focus:border-[#DC143C] rounded-xl px-3.5 py-2.5 text-sm outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-neutral-300 mb-1">
+                Data de Nascimento (+18)
+              </label>
+              <input
+                type="date"
+                required
+                value={authForm.birthDate}
+                onChange={(e) => setAuthForm({ ...authForm, birthDate: e.target.value })}
+                className="w-full bg-[#1C1C1C] border border-[#2E2E2E] focus:border-[#DC143C] rounded-xl px-3.5 py-2.5 text-sm outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-neutral-300 mb-1">
+                Senha
+              </label>
+              <input
+                type="password"
+                required
+                placeholder="••••••••"
+                value={authForm.password}
+                onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })}
+                className="w-full bg-[#1C1C1C] border border-[#2E2E2E] focus:border-[#DC143C] rounded-xl px-3.5 py-2.5 text-sm outline-none"
+              />
+            </div>
+
+            {authError && (
+              <div className="bg-[#3B0712] border border-[#DC143C]/60 text-rose-200 text-xs rounded-xl px-3 py-2.5 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 shrink-0 text-[#DC143C]" />
+                <span>{authError}</span>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-[#8B0000] to-[#DC143C] hover:from-[#A30000] hover:to-[#FF1E4B] font-bold text-sm tracking-wide shadow-lg shadow-[#8B0000]/30 transition flex items-center justify-center gap-2"
+            >
+              <Flame className="w-4 h-4" />
+              {authMode === "login"
+                ? "CONFIRMAR +18 E ACESSAR AURA"
+                : "CADASTRAR E ENTRAR NA AURA"}
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  const viewedProfile = getUserById(profileTargetId);
+  const isOwnProfile = viewedProfile.id === currentUser.id;
+  const activeStory =
+    activeStoryIndex !== null ? stories[activeStoryIndex] : null;
+  const activeStoryAuthor = activeStory ? getUserById(activeStory.userId) : null;
+
+  return (
+    <div className="min-h-screen w-full bg-[#0A0A0A] text-[#F5F5F5] flex flex-col">
+      {/* Toast flutuante */}
+      {toast && (
+        <div className="fixed top-20 right-6 z-[70] bg-[#1A1A1A] border border-[#DC143C]/70 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2.5 text-sm">
+          <ChiliLogo className="w-5 h-5 shrink-0" />
+          <span>{toast}</span>
+        </div>
+      )}
+
+      {/* BARRA SUPERIOR FIXA ESTILO FACEBOOK (DARK + VERMELHO) */}
+      <header className="sticky top-0 z-40 w-full h-16 bg-[#121212]/95 backdrop-blur-md border-b border-[#262626] px-4 lg:px-6 flex items-center justify-between gap-4">
+        {/* Esquerda: Logo Pimenta + Busca */}
+        <div className="flex items-center gap-3 min-w-0">
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab("feed");
+              setFeedFilter("all");
+            }}
+            className="flex items-center gap-2.5 group shrink-0"
+          >
+            <div className="w-10 h-10 rounded-xl bg-[#1D0C10] border border-[#8B0000]/70 flex items-center justify-center group-hover:border-[#DC143C] transition">
+              <ChiliLogo className="w-7 h-7" />
+            </div>
+            <div className="text-left leading-none">
+              <span className="text-xl font-black tracking-wider text-white">
+                AURA
+              </span>
+              <span className="ml-1.5 text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#8B0000] text-rose-100 align-middle">
+                +18
+              </span>
+            </div>
+          </button>
+
+          <div className="relative hidden sm:block w-56 md:w-72">
+            <Search className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Buscar na Aura, membros, tags..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-[#1E1E1E] border border-[#2C2C2C] focus:border-[#DC143C] rounded-full pl-9 pr-4 py-2 text-sm text-white placeholder-neutral-500 outline-none transition"
+            />
+          </div>
+        </div>
+
+        {/* Centro: Navegação principal */}
+        <nav className="hidden md:flex items-center gap-1 lg:gap-2 h-full">
+          <button
+            type="button"
+            onClick={() => setActiveTab("feed")}
+            className={`h-full px-5 flex items-center gap-2 text-sm font-semibold border-b-[3px] transition ${
+              activeTab === "feed"
+                ? "border-[#DC143C] text-white"
+                : "border-transparent text-neutral-400 hover:text-white hover:bg-[#1A1A1A]"
+            }`}
+          >
+            <Home className="w-4 h-4" />
+            <span>Feed</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab("members")}
+            className={`h-full px-5 flex items-center gap-2 text-sm font-semibold border-b-[3px] transition ${
+              activeTab === "members"
+                ? "border-[#DC143C] text-white"
+                : "border-transparent text-neutral-400 hover:text-white hover:bg-[#1A1A1A]"
+            }`}
+          >
+            <Users className="w-4 h-4" />
+            <span>Membros</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab("messages");
+              setUnreadCount(0);
+            }}
+            className={`h-full px-5 flex items-center gap-2 text-sm font-semibold border-b-[3px] transition ${
+              activeTab === "messages"
+                ? "border-[#DC143C] text-white"
+                : "border-transparent text-neutral-400 hover:text-white hover:bg-[#1A1A1A]"
+            }`}
+          >
+            <MessageCircle className="w-4 h-4" />
+            <span>Chat</span>
+          </button>
+
+          {currentUser.role === "admin" && (
+            <button
+              type="button"
+              onClick={() => setActiveTab("admin")}
+              className={`h-full px-5 flex items-center gap-2 text-sm font-semibold border-b-[3px] transition ${
+                activeTab === "admin"
+                  ? "border-[#DC143C] text-[#FF3B5C]"
+                  : "border-transparent text-rose-300/80 hover:text-white hover:bg-[#1A1A1A]"
+              }`}
+            >
+              <Shield className="w-4 h-4" />
+              <span>Admin</span>
+            </button>
+          )}
+        </nav>
+
+        {/* Direita: Alternador de Nível (Demo), Mensagens, Notificações e Perfil */}
+        <div className="flex items-center gap-2 shrink-0">
+          {/* Seletor rápido de conta para testar Usuário vs Admin */}
+          <div className="hidden xl:flex items-center bg-[#1B1B1B] border border-[#2E2E2E] rounded-full p-0.5 text-xs">
+            <button
+              type="button"
+              onClick={() => {
+                setCurrentUserId("u1");
+                setProfileTargetId("u1");
+                triggerToast("Modo Administrador ativado (Valentina Noir)");
+              }}
+              className={`px-2.5 py-1 rounded-full font-semibold transition flex items-center gap-1 ${
+                currentUser.role === "admin"
+                  ? "bg-[#8B0000] text-white"
+                  : "text-neutral-400 hover:text-white"
+              }`}
+            >
+              <Crown className="w-3 h-3" />
+              Admin
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setCurrentUserId("u2");
+                setProfileTargetId("u2");
+                if (activeTab === "admin") setActiveTab("feed");
+                triggerToast("Modo Usuário comum ativado (Dante Moreau)");
+              }}
+              className={`px-2.5 py-1 rounded-full font-semibold transition flex items-center gap-1 ${
+                currentUser.role === "user"
+                  ? "bg-[#DC143C] text-white"
+                  : "text-neutral-400 hover:text-white"
+              }`}
+            >
+              <UserCheck className="w-3 h-3" />
+              Usuário
+            </button>
+          </div>
+
+          {/* Botão Mensagens com Dropdown */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                setShowMsgDropdown((prev) => !prev);
+                setShowNotifDropdown(false);
+                setUnreadCount(0);
+              }}
+              className="w-10 h-10 rounded-full bg-[#1E1E1E] hover:bg-[#282828] border border-[#2E2E2E] flex items-center justify-center relative transition"
+              title="Mensagens e Chat"
+            >
+              <MessageCircle className="w-5 h-5 text-neutral-200" />
+              {unreadCount > 0 && (
+                <span className=" -top-1 -right-1 absolute w-5 h-5 rounded-full bg-[#DC143C] text-white text-[11px] font-bold flex items-center justify-center">
+                  {unreadCount}
+                </span>
+              )}
+            </button>
+
+            {showMsgDropdown && (
+              <div className="fixed sm:absolute right-4 sm:right-0 top-16 sm:top-12 w-80 bg-[#161616] border border-[#2E2E2E] rounded-2xl shadow-2xl p-3 z-50">
+                <div className="flex items-center justify-between pb-2.5 mb-2 border-b border-[#252525]">
+                  <span className="font-bold text-sm text-white">Conversas Diretas</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowMsgDropdown(false);
+                      setActiveTab("messages");
+                    }}
+                    className="text-xs text-[#FF3B5C] hover:underline font-semibold"
+                  >
+                    Abrir Central
+                  </button>
+                </div>
+                <div className="space-y-1 max-h-72 overflow-y-auto">
+                  {otherUsers.map((u) => {
+                    const msgs = messagesByUser[u.id] || [];
+                    const lastMsg = msgs[msgs.length - 1];
+                    return (
+                      <button
+                        key={u.id}
+                        type="button"
+                        onClick={() => openChatWith(u.id)}
+                        className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-[#202020] text-left transition"
+                      >
+                        <div className="relative shrink-0">
+                          <img
+                            src={u.avatar}
+                            alt={u.name}
+                            className="w-10 h-10 rounded-full object-cover border border-[#333]"
+                          />
+                          <span
+                            className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-[#161616] ${
+                              u.status === "online" ? "bg-emerald-400" : "bg-amber-400"
+                            }`}
+                          />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="text-sm font-semibold text-white truncate">
+                            {u.name}
+                          </div>
+                          <div className="text-xs text-neutral-400 truncate">
+                            {lastMsg ? lastMsg.text : "Iniciar conversa..."}
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Botão Notificações */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                setShowNotifDropdown((prev) => !prev);
+                setShowMsgDropdown(false);
+              }}
+              className="w-10 h-10 rounded-full bg-[#1E1E1E] hover:bg-[#282828] border border-[#2E2E2E] flex items-center justify-center relative transition"
+              title="Notificações"
+            >
+              <Bell className="w-5 h-5 text-neutral-200" />
+              <span className="top-2 right-2.5 absolute w-2 h-2 rounded-full bg-[#FF2E54]" />
+            </button>
+
+            {showNotifDropdown && (
+              <div className="fixed sm:absolute right-4 sm:right-0 top-16 sm:top-12 w-80 bg-[#161616] border border-[#2E2E2E] rounded-2xl shadow-2xl p-3 z-50">
+                <div className="font-bold text-sm text-white pb-2 mb-2 border-b border-[#252525]">
+                  Notificações
+                </div>
+                <div className="space-y-2">
+                  {notifications.map((n) => (
+                    <div
+                      key={n.id}
+                      className="p-2.5 rounded-xl bg-[#1C1C1C] border border-[#272727] text-xs"
+                    >
+                      <p className="text-neutral-200">{n.text}</p>
+                      <span className="text-[11px] text-neutral-500 mt-1 block">
+                        {n.time}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Avatar do Usuário Atual */}
+          <button
+            type="button"
+            onClick={() => {
+              setProfileTargetId(currentUser.id);
+              setActiveTab("profile");
+            }}
+            className="flex items-center gap-2 pl-1 pr-2.5 py-1 rounded-full bg-[#1C1C1C] hover:bg-[#252525] border border-[#2E2E2E] transition"
+          >
+            <img
+              src={currentUser.avatar}
+              alt={currentUser.name}
+              className="w-8 h-8 rounded-full object-cover border border-[#DC143C]"
+            />
+            <span className="hidden lg:inline text-sm font-semibold text-white max-w-[110px] truncate">
+              {currentUser.name.split(" ")[0]}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setAgeVerified(false)}
+            className="w-9 h-9 rounded-full bg-[#1A1214] hover:bg-[#2A1419] border border-[#5A1120] flex items-center justify-center text-rose-300 transition"
+            title="Sair / Tela +18"
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
+        </div>
+      </header>
+
+      {/* Navegação Mobile */}
+      <div className="flex md:hidden items-center justify-around bg-[#121212] border-b border-[#242424] py-1.5 px-2 sticky top-16 z-30">
+        <button
+          type="button"
+          onClick={() => setActiveTab("feed")}
+          className={`flex flex-col items-center text-[11px] px-3 py-1 rounded-lg ${
+            activeTab === "feed" ? "text-[#FF2E54] bg-[#1E1216]" : "text-neutral-400"
+          }`}
+        >
+          <Home className="w-4 h-4 mb-0.5" />
+          Feed
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab("members")}
+          className={`flex flex-col items-center text-[11px] px-3 py-1 rounded-lg ${
+            activeTab === "members" ? "text-[#FF2E54] bg-[#1E1216]" : "text-neutral-400"
+          }`}
+        >
+          <Users className="w-4 h-4 mb-0.5" />
+          Membros
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab("messages")}
+          className={`flex flex-col items-center text-[11px] px-3 py-1 rounded-lg ${
+            activeTab === "messages" ? "text-[#FF2E54] bg-[#1E1216]" : "text-neutral-400"
+          }`}
+        >
+          <MessageCircle className="w-4 h-4 mb-0.5" />
+          Chat
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setProfileTargetId(currentUser.id);
+            setActiveTab("profile");
+          }}
+          className={`flex flex-col items-center text-[11px] px-3 py-1 rounded-lg ${
+            activeTab === "profile" ? "text-[#FF2E54] bg-[#1E1216]" : "text-neutral-400"
+          }`}
+        >
+          <Edit3 className="w-4 h-4 mb-0.5" />
+          Perfil
+        </button>
+        {currentUser.role === "admin" && (
+          <button
+            type="button"
+            onClick={() => setActiveTab("admin")}
+            className={`flex flex-col items-center text-[11px] px-3 py-1 rounded-lg ${
+              activeTab === "admin" ? "text-[#FF2E54] bg-[#1E1216]" : "text-neutral-400"
+            }`}
+          >
+            <Shield className="w-4 h-4 mb-0.5" />
+            Admin
+          </button>
+        )}
+      </div>
+
+      {/* Aviso Global da Administração */}
+      {globalNotice && (
+        <div className="w-full bg-gradient-to-r from-[#2A060D] via-[#4A0815] to-[#2A060D] border-b border-[#8B0000]/60 px-4 py-2 text-center text-xs text-rose-100 flex items-center justify-center gap-2">
+          <Flame className="w-3.5 h-3.5 text-[#FF2E54] shrink-0" />
+          <span>{globalNotice}</span>
+        </div>
+      )}
+
+      {/* CORPO PRINCIPAL WIDESCREEN 3 COLUNAS (DESKTOP) */}
+      <div className="flex-1 w-full max-w-[1600px] mx-auto px-3 sm:px-5 lg:px-6 py-5 grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)_300px] xl:grid-cols-[280px_minmax(0,1fr)_330px] gap-6 items-start">
+        {/* COLUNA ESQUERDA (MENU LATERAL + CARD DO PERFIL) */}
+        <aside className="hidden lg:flex flex-col gap-4 sticky top-20">
+          <div className="bg-[#141414] border border-[#262626] rounded-2xl p-4">
+            <div className="flex items-center gap-3 mb-3">
+              <img
+                src={currentUser.avatar}
+                alt={currentUser.name}
+                className="w-12 h-12 rounded-full object-cover border-2 border-[#DC143C]"
+              />
+              <div className="min-w-0">
+                <div className="font-bold text-sm text-white truncate flex items-center gap-1">
+                  <span>{currentUser.name}</span>
+                  {currentUser.role === "admin" && (
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#8B0000] text-white uppercase">
+                      Admin
+                    </span>
+                  )}
+                </div>
+                <div className="text-xs text-neutral-400 truncate">
+                  {currentUser.handle}
+                </div>
+              </div>
+            </div>
+            <p className="text-xs text-neutral-300 italic bg-[#1B1B1B] border border-[#282828] rounded-xl px-3 py-2 mb-3">
+              "{currentUser.mood}"
+            </p>
+            <button
+              type="button"
+              onClick={() => openEditProfileModal(currentUser)}
+              className="w-full py-2 rounded-xl bg-[#1F1F1F] hover:bg-[#292929] border border-[#323232] text-xs font-semibold text-white flex items-center justify-center gap-1.5 transition"
+            >
+              <Edit3 className="w-3.5 h-3.5 text-[#FF2E54]" />
+              Editar Meu Perfil
+            </button>
+          </div>
+
+          <div className="bg-[#141414] border border-[#262626] rounded-2xl p-2.5 space-y-1">
+            <button
+              type="button"
+              onClick={() => setActiveTab("feed")}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+                activeTab === "feed"
+                  ? "bg-[#8B0000]/30 text-white border border-[#8B0000]/60"
+                  : "text-neutral-300 hover:bg-[#1C1C1C]"
+              }`}
+            >
+              <Flame className="w-4 h-4 text-[#FF2E54]" />
+              <span>Feed Principal</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setProfileTargetId(currentUser.id);
+                setActiveTab("profile");
+              }}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+                activeTab === "profile"
+                  ? "bg-[#8B0000]/30 text-white border border-[#8B0000]/60"
+                  : "text-neutral-300 hover:bg-[#1C1C1C]"
+              }`}
+            >
+              <Sparkles className="w-4 h-4 text-[#FF2E54]" />
+              <span>Meu Perfil & Timeline</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("members")}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+                activeTab === "members"
+                  ? "bg-[#8B0000]/30 text-white border border-[#8B0000]/60"
+                  : "text-neutral-300 hover:bg-[#1C1C1C]"
+              }`}
+            >
+              <Users className="w-4 h-4 text-[#FF2E54]" />
+              <span>Comunidade ({otherUsers.length + 1})</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("messages")}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+                activeTab === "messages"
+                  ? "bg-[#8B0000]/30 text-white border border-[#8B0000]/60"
+                  : "text-neutral-300 hover:bg-[#1C1C1C]"
+              }`}
+            >
+              <MessageCircle className="w-4 h-4 text-[#FF2E54]" />
+              <span>Central de Chat</span>
+            </button>
+
+            {currentUser.role === "admin" && (
+              <button
+                type="button"
+                onClick={() => setActiveTab("admin")}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition ${
+                  activeTab === "admin"
+                    ? "bg-[#8B0000] text-white"
+                    : "text-rose-200 hover:bg-[#241015]"
+                }`}
+              >
+                <Shield className="w-4 h-4 text-[#FF2E54]" />
+                <span>Painel de Administração</span>
+              </button>
+            )}
+          </div>
+        </aside>
+
+        {/* COLUNA CENTRAL (CONTEÚDO DINÂMICO POR ABA) */}
+        <main className="min-w-0 space-y-5">
+          {/* ABA: FEED PRINCIPAL */}
+          {activeTab === "feed" && (
+            <>
+              {/* Stories +18 */}
+              <section className="bg-[#141414] border border-[#262626] rounded-2xl p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h2 className="text-sm font-bold text-white flex items-center gap-2">
+                    <ChiliLogo className="w-4 h-4" />
+                    <span>Stories em Tempo Real</span>
+                  </h2>
+                  <button
+                    type="button"
+                    onClick={() => setShowNewStoryModal(true)}
+                    className="text-xs font-semibold text-[#FF2E54] hover:underline flex items-center gap-1"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    Criar Story
+                  </button>
+                </div>
+
+                <div className="flex gap-3 overflow-x-auto pb-1">
+                  {/* Card Criar Story */}
+                  <button
+                    type="button"
+                    onClick={() => setShowNewStoryModal(true)}
+                    className="w-28 sm:w-32 h-44 rounded-2xl bg-[#1B1B1B] border border-dashed border-[#444] hover:border-[#DC143C] shrink-0 flex flex-col items-center justify-center gap-2 p-2 transition group"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-[#8B0000] flex items-center justify-center text-white group-hover:scale-105 transition">
+                      <Plus className="w-5 h-5" />
+                    </div>
+                    <span className="text-xs font-semibold text-neutral-200 text-center">
+                      Postar Story
+                    </span>
+                  </button>
+
+                  {stories.map((story, idx) => {
+                    const author = getUserById(story.userId);
+                    return (
+                      <button
+                        key={story.id}
+                        type="button"
+                        onClick={() => {
+                          setActiveStoryIndex(idx);
+                          setStoryReply("");
+                        }}
+                        className="relative w-28 sm:w-32 h-44 rounded-2xl overflow-hidden shrink-0 border-2 border-[#DC143C]/80 hover:border-[#FF2E54] group text-left transition"
+                      >
+                        <img
+                          src={story.image}
+                          alt={story.caption}
+                          className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/30" />
+                        <img
+                          src={author.avatar}
+                          alt={author.name}
+                          className="w-8 h-8 rounded-full object-cover border-2 border-[#FF2E54] absolute top-2.5 left-2.5"
+                        />
+                        <div className="absolute bottom-2.5 left-2.5 right-2.5">
+                          <p className="text-[11px] font-bold text-white truncate">
+                            {author.name}
+                          </p>
+                          <p className="text-[10px] text-neutral-300 line-clamp-2 leading-tight mt-0.5">
+                            {story.caption}
+                          </p>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+
+              {/* Caixa de Nova Publicação */}
+              <section className="bg-[#141414] border border-[#262626] rounded-2xl p-4">
+                <form onSubmit={handleCreatePost} className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <img
+                      src={currentUser.avatar}
+                      alt={currentUser.name}
+                      className="w-10 h-10 rounded-full object-cover border border-[#DC143C] shrink-0"
+                    />
+                    <textarea
+                      rows={2}
+                      placeholder={`O que está pegando fogo hoje, ${currentUser.name.split(" ")[0]}?`}
+                      value={newPostText}
+                      onChange={(e) => setNewPostText(e.target.value)}
+                      className="w-full bg-[#1C1C1C] border border-[#2B2B2B] focus:border-[#DC143C] rounded-xl p-3 text-sm text-white placeholder-neutral-500 outline-none resize-none"
+                    />
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
+                    <div className="flex flex-wrap items-center gap-2 flex-1 min-w-[220px]">
+                      <input
+                        type="url"
+                        placeholder="URL de imagem opcional (https://...)"
+                        value={newPostImage}
+                        onChange={(e) => setNewPostImage(e.target.value)}
+                        className="flex-1 min-w-[180px] bg-[#1C1C1C] border border-[#2B2B2B] focus:border-[#DC143C] rounded-xl px-3 py-1.5 text-xs text-white placeholder-neutral-500 outline-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setNewPostMature((prev) => !prev)}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-semibold border flex items-center gap-1.5 transition ${
+                          newPostMature
+                            ? "bg-[#3A0914] border-[#DC143C] text-rose-200"
+                            : "bg-[#1C1C1C] border-[#2E2E2E] text-neutral-400"
+                        }`}
+                      >
+                        <Lock className="w-3.5 h-3.5" />
+                        <span>{newPostMature ? "Conteúdo +18" : "Público"}</span>
+                      </button>
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#8B0000] to-[#DC143C] hover:from-[#A30000] hover:to-[#FF1E4B] text-xs font-bold text-white shadow-md transition"
+                    >
+                      Publicar
+                    </button>
+                  </div>
+                </form>
+              </section>
+
+              {/* Filtros rápidos do Feed */}
+              <div className="flex items-center gap-2">
+                {[
+                  { id: "all", label: "Tudo no Feed" },
+                  { id: "mature", label: "🌶️ Picante +18" },
+                  { id: "photos", label: "📸 Com Fotos" },
+                ].map((f) => (
+                  <button
+                    key={f.id}
+                    type="button"
+                    onClick={() => setFeedFilter(f.id)}
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border transition ${
+                      feedFilter === f.id
+                        ? "bg-[#8B0000] border-[#DC143C] text-white"
+                        : "bg-[#151515] border-[#282828] text-neutral-400 hover:text-white"
+                    }`}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Lista de Publicações */}
+              <div className="space-y-4">
+                {filteredPosts.map((post) => {
+                  const author = getUserById(post.authorId);
+                  const isBlurred = post.isMature && !revealedPosts[post.id];
+
+                  return (
+                    <article
+                      key={post.id}
+                      className="bg-[#141414] border border-[#262626] rounded-2xl overflow-hidden"
+                    >
+                      {/* Cabeçalho do Post */}
+                      <div className="p-4 flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setProfileTargetId(author.id);
+                              setActiveTab("profile");
+                            }}
+                            className="shrink-0"
+                          >
+                            <img
+                              src={author.avatar}
+                              alt={author.name}
+                              className="w-11 h-11 rounded-full object-cover border border-[#DC143C]"
+                            />
+                          </button>
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setProfileTargetId(author.id);
+                                  setActiveTab("profile");
+                                }}
+                                className="font-bold text-sm text-white hover:underline truncate"
+                              >
+                                {author.name}
+                              </button>
+                              {author.verified18 && (
+                                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#2B0A11] text-[#FF3B5C] border border-[#8B0000]/50">
+                                  +18
+                                </span>
+                              )}
+                              {author.role === "admin" && (
+                                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#8B0000] text-white">
+                                  ADMIN
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-xs text-neutral-400">
+                              {author.handle} • {post.createdAt}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-1.5">
+                          {author.id !== currentUser.id && (
+                            <button
+                              type="button"
+                              onClick={() => openChatWith(author.id)}
+                              className="px-3 py-1.5 rounded-lg bg-[#1E1E1E] hover:bg-[#2A2A2A] border border-[#303030] text-xs font-semibold text-neutral-200 flex items-center gap-1 transition"
+                            >
+                              <MessageCircle className="w-3.5 h-3.5 text-[#FF2E54]" />
+                              <span>Chat</span>
+                            </button>
+                          )}
+                          {(currentUser.role === "admin" ||
+                            author.id === currentUser.id) && (
+                            <button
+                              type="button"
+                              onClick={() => handleDeletePost(post.id)}
+                              className="p-1.5 rounded-lg text-neutral-400 hover:text-rose-400 hover:bg-[#221216] transition"
+                              title="Excluir publicação"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Texto */}
+                      {post.content && (
+                        <div className="px-4 pb-3 text-sm text-neutral-100 leading-relaxed whitespace-pre-line">
+                          {post.content}
+                        </div>
+                      )}
+
+                      {/* Imagem com opção Blur +18 */}
+                      {post.image && (
+                        <div className="relative bg-black border-y border-[#222]">
+                          <img
+                            src={post.image}
+                            alt="Mídia da publicação"
+                            className={`w-full max-h-[520px] object-cover transition duration-300 ${
+                              isBlurred ? "blur-2xl scale-105 opacity-60" : ""
+                            }`}
+                          />
+                          {isBlurred && (
+                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 p-4 text-center">
+                              <Lock className="w-7 h-7 text-[#FF2E54] mb-2" />
+                              <p className="text-sm font-bold text-white">
+                                Mídia marcada como +18 / Sensível
+                              </p>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setRevealedPosts((prev) => ({
+                                    ...prev,
+                                    [post.id]: true,
+                                  }))
+                                }
+                                className="mt-3 px-4 py-2 rounded-xl bg-[#8B0000] hover:bg-[#DC143C] text-xs font-bold text-white flex items-center gap-1.5 transition"
+                              >
+                                <Eye className="w-4 h-4" />
+                                Mostrar imagem
+                              </button>
+                            </div>
+                          )}
+                          {post.isMature && !isBlurred && (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setRevealedPosts((prev) => ({
+                                  ...prev,
+                                  [post.id]: false,
+                                }))
+                              }
+                              className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-black/70 hover:bg-black/90 text-xs text-neutral-200 flex items-center gap-1"
+                            >
+                              <EyeOff className="w-3.5 h-3.5" />
+                              Ocultar
+                            </button>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Barra de Reações Picantes */}
+                      <div className="px-4 py-2.5 border-b border-[#222] flex items-center justify-between gap-2 flex-wrap">
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleReaction(post.id, "chili")}
+                            className={`px-3 py-1.5 rounded-full text-xs font-semibold border flex items-center gap-1.5 transition ${
+                              post.userReacted.chili
+                                ? "bg-[#5C0919] border-[#FF2E54] text-white"
+                                : "bg-[#1B1B1B] border-[#2C2C2C] text-neutral-300 hover:border-[#8B0000]"
+                            }`}
+                          >
+                            <span>🌶️</span>
+                            <span>Picante</span>
+                            <span className="font-bold">{post.reactions.chili}</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleReaction(post.id, "heart")}
+                            className={`px-3 py-1.5 rounded-full text-xs font-semibold border flex items-center gap-1.5 transition ${
+                              post.userReacted.heart
+                                ? "bg-[#5C0919] border-[#FF2E54] text-white"
+                                : "bg-[#1B1B1B] border-[#2C2C2C] text-neutral-300 hover:border-[#8B0000]"
+                            }`}
+                          >
+                            <Heart className="w-3.5 h-3.5 text-[#FF2E54]" />
+                            <span>Amei</span>
+                            <span className="font-bold">{post.reactions.heart}</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleReaction(post.id, "fire")}
+                            className={`px-3 py-1.5 rounded-full text-xs font-semibold border flex items-center gap-1.5 transition ${
+                              post.userReacted.fire
+                                ? "bg-[#5C0919] border-[#FF2E54] text-white"
+                                : "bg-[#1B1B1B] border-[#2C2C2C] text-neutral-300 hover:border-[#8B0000]"
+                            }`}
+                          >
+                            <Flame className="w-3.5 h-3.5 text-amber-400" />
+                            <span>Fogo</span>
+                            <span className="font-bold">{post.reactions.fire}</span>
+                          </button>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => triggerToast("Link copiado para compartilhar!")}
+                          className="text-xs text-neutral-400 hover:text-white flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-[#1E1E1E] transition"
+                        >
+                          <Share2 className="w-3.5 h-3.5" />
+                          <span>Compartilhar</span>
+                        </button>
+                      </div>
+
+                      {/* Comentários */}
+                      <div className="p-4 bg-[#111111] space-y-3">
+                        {post.comments.map((c) => {
+                          const cAuthor = getUserById(c.authorId);
+                          return (
+                            <div key={c.id} className="flex items-start gap-2.5">
+                              <img
+                                src={cAuthor.avatar}
+                                alt={cAuthor.name}
+                                className="w-7 h-7 rounded-full object-cover shrink-0 mt-0.5"
+                              />
+                              <div className="bg-[#1B1B1B] border border-[#282828] rounded-2xl px-3 py-2 flex-1">
+                                <div className="flex items-center justify-between gap-2">
+                                  <span className="text-xs font-bold text-white">
+                                    {cAuthor.name}
+                                  </span>
+                                  <span className="text-[10px] text-neutral-500">
+                                    {c.time}
+                                  </span>
+                                </div>
+                                <p className="text-xs text-neutral-200 mt-0.5">
+                                  {c.text}
+                                </p>
+                              </div>
+                            </div>
+                          );
+                        })}
+
+                        <form
+                          onSubmit={(e) => handleAddComment(e, post.id)}
+                          className="flex items-center gap-2"
+                        >
+                          <img
+                            src={currentUser.avatar}
+                            alt={currentUser.name}
+                            className="w-7 h-7 rounded-full object-cover shrink-0"
+                          />
+                          <input
+                            type="text"
+                            placeholder="Escreva um comentário..."
+                            value={commentInputs[post.id] || ""}
+                            onChange={(e) =>
+                              setCommentInputs((prev) => ({
+                                ...prev,
+                                [post.id]: e.target.value,
+                              }))
+                            }
+                            className="flex-1 bg-[#1A1A1A] border border-[#2B2B2B] focus:border-[#DC143C] rounded-full px-3.5 py-1.5 text-xs text-white placeholder-neutral-500 outline-none"
+                          />
+                          <button
+                            type="submit"
+                            className="p-2 rounded-full bg-[#8B0000] hover:bg-[#DC143C] text-white transition"
+                            title="Enviar comentário"
+                          >
+                            <Send className="w-3.5 h-3.5" />
+                          </button>
+                        </form>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            </>
+          )}
+
+          {/* ABA: PERFIL ESTILO FACEBOOK + EDIÇÃO COMPLETA */}
+          {activeTab === "profile" && (
+            <section className="bg-[#141414] border border-[#262626] rounded-2xl overflow-hidden">
+              {/* Foto de Capa */}
+              <div className="relative h-48 sm:h-60 bg-[#1B1B1B]">
+                <img
+                  src={viewedProfile.cover}
+                  alt="Capa do perfil"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-black/30 to-transparent" />
+                {isOwnProfile && (
+                  <button
+                    type="button"
+                    onClick={() => openEditProfileModal(currentUser)}
+                    className="absolute bottom-3 right-3 px-3 py-1.5 rounded-xl bg-black/75 hover:bg-black/95 border border-white/15 text-xs font-semibold text-white flex items-center gap-1.5 transition"
+                  >
+                    <Camera className="w-3.5 h-3.5 text-[#FF2E54]" />
+                    <span>Alterar Capa</span>
+                  </button>
+                )}
+              </div>
+
+              {/* Cabeçalho do Perfil */}
+              <div className="px-5 pb-5">
+                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 -mt-14 sm:-mt-16 mb-4 relative z-10">
+                  <div className="flex items-end gap-4">
+                    <div className="relative">
+                      <img
+                        src={viewedProfile.avatar}
+                        alt={viewedProfile.name}
+                        className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl object-cover border-4 border-[#141414] shadow-xl"
+                      />
+                      {isOwnProfile && (
+                        <button
+                          type="button"
+                          onClick={() => openEditProfileModal(currentUser)}
+                          className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-[#8B0000] hover:bg-[#DC143C] border-2 border-[#141414] flex items-center justify-center text-white transition"
+                          title="Editar foto de perfil"
+                        >
+                          <Camera className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="pb-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h1 className="text-xl sm:text-2xl font-extrabold text-white">
+                          {viewedProfile.name}
+                        </h1>
+                        {viewedProfile.verified18 && (
+                          <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-[#3A0914] text-[#FF3B5C] border border-[#8B0000]">
+                            VERIFICADO +18
+                          </span>
+                        )}
+                        {viewedProfile.role === "admin" && (
+                          <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-[#8B0000] text-white">
+                            ADMIN
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-neutral-400">
+                        {viewedProfile.handle} • {viewedProfile.followers} seguidores •{" "}
+                        {viewedProfile.following} seguindo
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    {isOwnProfile ? (
+                      <button
+                        type="button"
+                        onClick={() => openEditProfileModal(currentUser)}
+                        className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#8B0000] to-[#DC143C] hover:from-[#A30000] hover:to-[#FF1E4B] text-xs font-bold text-white flex items-center gap-1.5 shadow-lg transition"
+                      >
+                        <Edit3 className="w-4 h-4" />
+                        <span>Editar Perfil</span>
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => openChatWith(viewedProfile.id)}
+                        className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#8B0000] to-[#DC143C] hover:from-[#A30000] hover:to-[#FF1E4B] text-xs font-bold text-white flex items-center gap-1.5 transition"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                        <span>Enviar Mensagem</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Bio e Detalhes */}
+                <p className="text-sm text-neutral-200 leading-relaxed mb-3">
+                  {viewedProfile.bio}
+                </p>
+
+                <div className="flex flex-wrap items-center gap-4 text-xs text-neutral-400 mb-4">
+                  <span className="flex items-center gap-1">
+                    <MapPin className="w-3.5 h-3.5 text-[#FF2E54]" />
+                    {viewedProfile.location}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Link2 className="w-3.5 h-3.5 text-[#FF2E54]" />
+                    {viewedProfile.website}
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5">
+                  {(viewedProfile.tags || []).map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-1 rounded-lg bg-[#1D1D1D] border border-[#2E2E2E] text-xs text-rose-200"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Postagens do Perfil */}
+              <div className="border-t border-[#262626] p-5 bg-[#101010] space-y-4">
+                <h3 className="text-sm font-bold text-white">
+                  Publicações de {viewedProfile.name}
+                </h3>
+                {posts.filter((p) => p.authorId === viewedProfile.id).length === 0 ? (
+                  <p className="text-xs text-neutral-500 py-6 text-center">
+                    Nenhuma publicação ainda neste perfil.
+                  </p>
+                ) : (
+                  posts
+                    .filter((p) => p.authorId === viewedProfile.id)
+                    .map((p) => (
+                      <div
+                        key={p.id}
+                        className="bg-[#161616] border border-[#262626] rounded-xl p-4 space-y-2.5"
+                      >
+                        <div className="text-xs text-neutral-400">{p.createdAt}</div>
+                        {p.content && (
+                          <p className="text-sm text-neutral-100">{p.content}</p>
+                        )}
+                        {p.image && (
+                          <img
+                            src={p.image}
+                            alt="Post do perfil"
+                            className="w-full max-h-80 object-cover rounded-xl"
+                          />
+                        )}
+                        <div className="text-xs text-neutral-400 pt-1">
+                          🌶️ {p.reactions.chili} • ❤️ {p.reactions.heart} • 🔥{" "}
+                          {p.reactions.fire}
+                        </div>
+                      </div>
+                    ))
+                )}
+              </div>
+            </section>
+          )}
+
+          {/* ABA: MEMBROS */}
+          {activeTab === "members" && (
+            <section className="bg-[#141414] border border-[#262626] rounded-2xl p-5">
+              <h2 className="text-lg font-extrabold text-white mb-4 flex items-center gap-2">
+                <Users className="w-5 h-5 text-[#FF2E54]" />
+                <span>Membros da Comunidade AURA</span>
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {users
+                  .filter((u) => !u.banned)
+                  .map((u) => (
+                    <div
+                      key={u.id}
+                      className="bg-[#1A1A1A] border border-[#2B2B2B] rounded-2xl p-4 flex flex-col justify-between gap-3"
+                    >
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={u.avatar}
+                          alt={u.name}
+                          className="w-14 h-14 rounded-xl object-cover border border-[#DC143C]"
+                        />
+                        <div className="min-w-0">
+                          <div className="font-bold text-sm text-white truncate flex items-center gap-1.5">
+                            <span>{u.name}</span>
+                            {u.role === "admin" && (
+                              <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#8B0000] text-white">
+                                ADMIN
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-xs text-neutral-400">{u.location}</div>
+                          <div className="text-[11px] text-rose-300 truncate mt-0.5">
+                            {u.mood}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setProfileTargetId(u.id);
+                            setActiveTab("profile");
+                          }}
+                          className="flex-1 py-1.5 rounded-xl bg-[#242424] hover:bg-[#2F2F2F] text-xs font-semibold text-white transition"
+                        >
+                          Ver Perfil
+                        </button>
+                        {u.id !== currentUser.id && (
+                          <button
+                            type="button"
+                            onClick={() => openChatWith(u.id)}
+                            className="flex-1 py-1.5 rounded-xl bg-[#8B0000] hover:bg-[#DC143C] text-xs font-bold text-white flex items-center justify-center gap-1 transition"
+                          >
+                            <MessageCircle className="w-3.5 h-3.5" />
+                            <span>Chat</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </section>
+          )}
+
+          {/* ABA: CENTRAL DE MENSAGENS */}
+          {activeTab === "messages" && (
+            <section className="bg-[#141414] border border-[#262626] rounded-2xl overflow-hidden grid grid-cols-1 md:grid-cols-[260px_minmax(0,1fr)] min-h-[520px]">
+              <div className="border-b md:border-b-0 md:border-r border-[#262626] p-3 space-y-1">
+                <div className="text-xs font-bold uppercase tracking-wider text-neutral-400 px-2 py-1.5">
+                  Conversas
+                </div>
+                {otherUsers.map((u) => {
+                  const active = selectedInboxUserId === u.id;
+                  return (
+                    <button
+                      key={u.id}
+                      type="button"
+                      onClick={() => setSelectedInboxUserId(u.id)}
+                      className={`w-full flex items-center gap-2.5 p-2.5 rounded-xl text-left transition ${
+                        active
+                          ? "bg-[#8B0000]/35 border border-[#DC143C]/60 text-white"
+                          : "hover:bg-[#1C1C1C] text-neutral-300"
+                      }`}
+                    >
+                      <img
+                        src={u.avatar}
+                        alt={u.name}
+                        className="w-10 h-10 rounded-full object-cover shrink-0"
+                      />
+                      <div className="min-w-0">
+                        <div className="text-sm font-semibold truncate">{u.name}</div>
+                        <div className="text-[11px] text-neutral-400 truncate">
+                          {u.status === "online" ? "● Online agora" : "○ Ausente"}
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="flex flex-col justify-between bg-[#101010]">
+                <div className="p-3.5 border-b border-[#242424] bg-[#161616] flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <img
+                      src={getUserById(selectedInboxUserId).avatar}
+                      alt={getUserById(selectedInboxUserId).name}
+                      className="w-9 h-9 rounded-full object-cover border border-[#DC143C]"
+                    />
+                    <div>
+                      <div className="text-sm font-bold text-white">
+                        {getUserById(selectedInboxUserId).name}
+                      </div>
+                      <div className="text-[11px] text-emerald-400">
+                        Chat privado ativo
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => openChatWith(selectedInboxUserId)}
+                    className="text-xs px-3 py-1 rounded-lg bg-[#222] hover:bg-[#2E2E2E] text-neutral-200"
+                  >
+                    Abrir Janela Flutuante
+                  </button>
+                </div>
+
+                <div className="flex-1 p-4 space-y-2.5 overflow-y-auto max-h-[360px]">
+                  {(messagesByUser[selectedInboxUserId] || []).map((m) => {
+                    const mine = m.senderId === "me";
+                    return (
+                      <div
+                        key={m.id}
+                        className={`flex flex-col max-w-[78%] ${
+                          mine ? "ml-auto items-end" : "mr-auto items-start"
+                        }`}
+                      >
+                        <div
+                          className={`px-3.5 py-2 rounded-2xl text-sm ${
+                            mine
+                              ? "bg-gradient-to-r from-[#8B0000] to-[#DC143C] text-white"
+                              : "bg-[#1E1E1E] border border-[#2D2D2D] text-neutral-100"
+                          }`}
+                        >
+                          {m.text}
+                        </div>
+                        <span className="text-[10px] text-neutral-500 mt-1 px-1">
+                          {m.time}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <form
+                  onSubmit={handleSendInboxMessage}
+                  className="p-3 border-t border-[#242424] bg-[#151515] flex items-center gap-2"
+                >
+                  <input
+                    type="text"
+                    placeholder={`Mensagem para ${getUserById(selectedInboxUserId).name}...`}
+                    value={inboxDraft}
+                    onChange={(e) => setInboxDraft(e.target.value)}
+                    className="flex-1 bg-[#1E1E1E] border border-[#2E2E2E] focus:border-[#DC143C] rounded-xl px-3.5 py-2 text-sm text-white outline-none"
+                  />
+                  <button
+                    type="submit"
+                    className="px-4 py-2 rounded-xl bg-[#8B0000] hover:bg-[#DC143C] text-white text-sm font-semibold flex items-center gap-1.5 transition"
+                  >
+                    <Send className="w-4 h-4" />
+                    <span>Enviar</span>
+                  </button>
+                </form>
+              </div>
+            </section>
+          )}
+
+          {/* ABA: PAINEL DE ADMINISTRAÇÃO */}
+          {activeTab === "admin" && currentUser.role === "admin" && (
+            <section className="space-y-5">
+              <div className="bg-[#141414] border border-[#8B0000]/60 rounded-2xl p-5">
+                <div className="flex items-center gap-2 mb-4">
+                  <Shield className="w-5 h-5 text-[#FF2E54]" />
+                  <h2 className="text-lg font-extrabold text-white">
+                    Painel de Administração AURA
+                  </h2>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+                  <div className="bg-[#1B1B1B] border border-[#2B2B2B] rounded-xl p-3">
+                    <div className="text-xs text-neutral-400">Membros</div>
+                    <div className="text-xl font-extrabold text-white mt-0.5">
+                      {users.length}
+                    </div>
+                  </div>
+                  <div className="bg-[#1B1B1B] border border-[#2B2B2B] rounded-xl p-3">
+                    <div className="text-xs text-neutral-400">Publicações</div>
+                    <div className="text-xl font-extrabold text-white mt-0.5">
+                      {posts.length}
+                    </div>
+                  </div>
+                  <div className="bg-[#1B1B1B] border border-[#2B2B2B] rounded-xl p-3">
+                    <div className="text-xs text-neutral-400">Denúncias Ativas</div>
+                    <div className="text-xl font-extrabold text-[#FF2E54] mt-0.5">
+                      {reports.filter((r) => r.status === "pendente").length}
+                    </div>
+                  </div>
+                  <div className="bg-[#1B1B1B] border border-[#2B2B2B] rounded-xl p-3">
+                    <div className="text-xs text-neutral-400">Verificados +18</div>
+                    <div className="text-xl font-extrabold text-emerald-400 mt-0.5">
+                      {users.filter((u) => u.verified18).length}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Aviso Global */}
+                <div className="mb-5">
+                  <label className="block text-xs font-semibold text-neutral-300 mb-1.5">
+                    Aviso Global no Topo da Rede
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={globalNotice}
+                      onChange={(e) => setGlobalNotice(e.target.value)}
+                      className="flex-1 bg-[#1C1C1C] border border-[#2E2E2E] focus:border-[#DC143C] rounded-xl px-3.5 py-2 text-xs text-white outline-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => triggerToast("Aviso global atualizado!")}
+                      className="px-4 py-2 rounded-xl bg-[#8B0000] hover:bg-[#DC143C] text-xs font-bold text-white"
+                    >
+                      Salvar
+                    </button>
+                  </div>
+                </div>
+
+                {/* Fila de Denúncias */}
+                <div className="mb-6">
+                  <h3 className="text-sm font-bold text-white mb-2.5">
+                    Fila de Moderação e Denúncias
+                  </h3>
+                  <div className="space-y-2">
+                    {reports.map((rep) => (
+                      <div
+                        key={rep.id}
+                        className="bg-[#1A1A1A] border border-[#2B2B2B] rounded-xl p-3 flex flex-wrap items-center justify-between gap-3"
+                      >
+                        <div>
+                          <div className="text-xs font-bold text-white">
+                            {rep.targetName}{" "}
+                            <span className="ml-2 px-2 py-0.5 rounded bg-[#2A2A2A] text-[10px] uppercase text-rose-200">
+                              {rep.status}
+                            </span>
+                          </div>
+                          <div className="text-xs text-neutral-400">
+                            {rep.reason} • Denunciado por {rep.reporter} ({rep.time})
+                          </div>
+                        </div>
+                        {rep.status === "pendente" && (
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => handleResolveReport(rep.id, "approve")}
+                              className="px-3 py-1 rounded-lg bg-emerald-700/80 hover:bg-emerald-600 text-xs font-semibold text-white flex items-center gap-1"
+                            >
+                              <Check className="w-3.5 h-3.5" />
+                              Resolver
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleResolveReport(rep.id, "dismiss")}
+                              className="px-3 py-1 rounded-lg bg-[#2A2A2A] hover:bg-[#363636] text-xs font-semibold text-neutral-200"
+                            >
+                              Descartar
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Gestão de Usuários e Níveis de Acesso */}
+                <div>
+                  <h3 className="text-sm font-bold text-white mb-2.5">
+                    Gestão de Contas e Permissões
+                  </h3>
+                  <div className="space-y-2">
+                    {users.map((u) => (
+                      <div
+                        key={u.id}
+                        className="bg-[#1A1A1A] border border-[#2B2B2B] rounded-xl p-3 flex flex-wrap items-center justify-between gap-3"
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <img
+                            src={u.avatar}
+                            alt={u.name}
+                            className="w-9 h-9 rounded-full object-cover"
+                          />
+                          <div>
+                            <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                              <span>{u.name}</span>
+                              <span className="px-1.5 py-0.5 rounded bg-[#8B0000]/50 text-[10px] uppercase text-rose-200">
+                                {u.role}
+                              </span>
+                              {u.banned && (
+                                <span className="px-1.5 py-0.5 rounded bg-red-900 text-[10px] text-white">
+                                  BANIDO
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-[11px] text-neutral-400">{u.handle}</div>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <button
+                            type="button"
+                            onClick={() => handleToggleUserRole(u.id)}
+                            className="px-2.5 py-1 rounded-lg bg-[#252525] hover:bg-[#323232] text-[11px] font-semibold text-white"
+                          >
+                            {u.role === "admin" ? "Tornar Usuário" : "Tornar Admin"}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleToggleVerify18(u.id)}
+                            className="px-2.5 py-1 rounded-lg bg-[#252525] hover:bg-[#323232] text-[11px] font-semibold text-rose-200"
+                          >
+                            {u.verified18 ? "Selo +18 OK" : "Verificar +18"}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleToggleBanUser(u.id)}
+                            className="px-2.5 py-1 rounded-lg bg-[#3A0914] hover:bg-[#5A0E20] text-[11px] font-semibold text-rose-200 flex items-center gap-1"
+                          >
+                            <Ban className="w-3 h-3" />
+                            <span>{u.banned ? "Reativar" : "Banir"}</span>
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+        </main>
+
+        {/* COLUNA DIREITA (CONTATOS ONLINE PARA CHAT + DESTAQUES) */}
+        <aside className="hidden lg:flex flex-col gap-4 sticky top-20">
+          <div className="bg-[#141414] border border-[#262626] rounded-2xl p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-neutral-400">
+                Contatos Online • Chat
+              </h2>
+              <span className="w-2 h-2 rounded-full bg-emerald-400" />
+            </div>
+
+            <div className="space-y-1.5">
+              {otherUsers.map((u) => (
+                <button
+                  key={u.id}
+                  type="button"
+                  onClick={() => openChatWith(u.id)}
+                  className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-[#1E1E1E] text-left transition group"
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="relative shrink-0">
+                      <img
+                        src={u.avatar}
+                        alt={u.name}
+                        className="w-9 h-9 rounded-full object-cover border border-[#303030]"
+                      />
+                      <span
+                        className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-[#141414] ${
+                          u.status === "online" ? "bg-emerald-400" : "bg-amber-400"
+                        }`}
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-xs font-bold text-white truncate group-hover:text-[#FF2E54] transition">
+                        {u.name}
+                      </div>
+                      <div className="text-[11px] text-neutral-400 truncate">
+                        {u.mood}
+                      </div>
+                    </div>
+                  </div>
+                  <MessageCircle className="w-4 h-4 text-neutral-500 group-hover:text-[#FF2E54] shrink-0" />
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-[#24060C] via-[#171717] to-[#121212] border border-[#8B0000]/50 rounded-2xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <ChiliLogo className="w-5 h-5" />
+              <h3 className="text-xs font-extrabold uppercase tracking-wider text-rose-200">
+                Clube Aura VIP
+              </h3>
+            </div>
+            <p className="text-xs text-neutral-300 leading-relaxed">
+              Personalize seu perfil, reaja com pimenta e abra até duas conversas privadas simultâneas no canto da tela.
+            </p>
+          </div>
+        </aside>
+      </div>
+
+      {/* JANELAS FLUTUANTES DE CHAT NO CANTO INFERIOR DIREITO */}
+      {openChatIds.length > 0 && (
+        <div className="fixed bottom-0 right-4 sm:right-6 z-50 flex items-end gap-3 pointer-events-none">
+          {openChatIds.map((uid) => {
+            const partner = getUserById(uid);
+            const isMin = Boolean(minimizedChats[uid]);
+            const msgs = messagesByUser[uid] || [];
+
+            return (
+              <div
+                key={uid}
+                className="pointer-events-auto w-72 sm:w-80 bg-[#161616] border border-[#333333] rounded-t-2xl shadow-2xl overflow-hidden flex flex-col"
+              >
+                {/* Cabeçalho da janela de chat */}
+                <div className="bg-gradient-to-r from-[#5A0716] to-[#1D1D1D] px-3.5 py-2.5 flex items-center justify-between border-b border-[#2B2B2B]">
+                  <button
+                    type="button"
+                    onClick={() => toggleMinimizeChat(uid)}
+                    className="flex items-center gap-2 min-w-0 text-left"
+                  >
+                    <img
+                      src={partner.avatar}
+                      alt={partner.name}
+                      className="w-7 h-7 rounded-full object-cover border border-[#FF2E54]"
+                    />
+                    <div className="min-w-0">
+                      <div className="text-xs font-bold text-white truncate">
+                        {partner.name}
+                      </div>
+                      <div className="text-[10px] text-emerald-300">Online</div>
+                    </div>
+                  </button>
+
+                  <div className="flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => toggleMinimizeChat(uid)}
+                      className="p-1 rounded hover:bg-white/10 text-neutral-200"
+                      title={isMin ? "Expandir" : "Minimizar"}
+                    >
+                      <Minus className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => closeChat(uid)}
+                      className="p-1 rounded hover:bg-white/10 text-neutral-200"
+                      title="Fechar conversa"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+
+                {!isMin && (
+                  <>
+                    {/* Mensagens */}
+                    <div className="h-64 p-3 overflow-y-auto space-y-2 bg-[#101010]">
+                      {msgs.map((m) => {
+                        const mine = m.senderId === "me";
+                        return (
+                          <div
+                            key={m.id}
+                            className={`flex flex-col max-w-[82%] ${
+                              mine ? "ml-auto items-end" : "mr-auto items-start"
+                            }`}
+                          >
+                            <div
+                              className={`px-3 py-1.5 rounded-2xl text-xs ${
+                                mine
+                                  ? "bg-gradient-to-r from-[#8B0000] to-[#DC143C] text-white"
+                                  : "bg-[#1F1F1F] border border-[#2E2E2E] text-neutral-100"
+                              }`}
+                            >
+                              {m.text}
+                            </div>
+                            <span className="text-[9px] text-neutral-500 mt-0.5 px-1">
+                              {m.time}
+                            </span>
+                          </div>
+                        );
+                      })}
+                      <div
+                        ref={(el) => {
+                          chatEndRefs.current[uid] = el;
+                        }}
+                      />
+                    </div>
+
+                    {/* Atalhos rápidos */}
+                    <div className="px-2.5 py-1.5 bg-[#151515] border-t border-[#242424] flex items-center gap-1.5">
+                      {["🌶️", "🔥", "😈", "❤️"].map((emoji) => (
+                        <button
+                          key={emoji}
+                          type="button"
+                          onClick={() =>
+                            setChatDrafts((prev) => ({
+                              ...prev,
+                              [uid]: `${prev[uid] || ""}${emoji}`,
+                            }))
+                          }
+                          className="text-xs px-1.5 py-0.5 rounded hover:bg-[#242424] transition"
+                        >
+                          {emoji}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Campo de digitação */}
+                    <form
+                      onSubmit={(e) => handleSendFloatingChat(e, uid)}
+                      className="p-2 bg-[#161616] border-t border-[#262626] flex items-center gap-1.5"
+                    >
+                      <input
+                        type="text"
+                        placeholder="Digite sua mensagem..."
+                        value={chatDrafts[uid] || ""}
+                        onChange={(e) =>
+                          setChatDrafts((prev) => ({
+                            ...prev,
+                            [uid]: e.target.value,
+                          }))
+                        }
+                        className="flex-1 bg-[#202020] border border-[#303030] focus:border-[#DC143C] rounded-full px-3 py-1.5 text-xs text-white outline-none"
+                      />
+                      <button
+                        type="submit"
+                        className="w-8 h-8 rounded-full bg-[#8B0000] hover:bg-[#DC143C] flex items-center justify-center text-white transition shrink-0"
+                      >
+                        <Send className="w-3.5 h-3.5" />
+                      </button>
+                    </form>
+                  </>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* MODAL DE EDIÇÃO DE PERFIL */}
+      {isEditProfileOpen && (
+        <div className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="w-full max-w-lg bg-[#161616] border border-[#2E2E2E] rounded-2xl p-6 shadow-2xl my-8">
+            <div className="flex items-center justify-between pb-3 mb-4 border-b border-[#262626]">
+              <h2 className="text-base font-extrabold text-white flex items-center gap-2">
+                <Edit3 className="w-4 h-4 text-[#FF2E54]" />
+                <span>Editar Perfil na AURA</span>
+              </h2>
+              <button
+                type="button"
+                onClick={() => setIsEditProfileOpen(false)}
+                className="p-1 rounded-lg hover:bg-[#242424] text-neutral-400 hover:text-white"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveProfile} className="space-y-3.5">
+              <div>
+                <label className="block text-xs font-semibold text-neutral-300 mb-1">
+                  Nome de Exibição
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={profileForm.name}
+                  onChange={(e) =>
+                    setProfileForm({ ...profileForm, name: e.target.value })
+                  }
+                  className="w-full bg-[#1F1F1F] border border-[#303030] focus:border-[#DC143C] rounded-xl px-3 py-2 text-sm text-white outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-neutral-300 mb-1">
+                  Status / Clima do Momento
+                </label>
+                <input
+                  type="text"
+                  value={profileForm.mood}
+                  onChange={(e) =>
+                    setProfileForm({ ...profileForm, mood: e.target.value })
+                  }
+                  className="w-full bg-[#1F1F1F] border border-[#303030] focus:border-[#DC143C] rounded-xl px-3 py-2 text-sm text-white outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-neutral-300 mb-1">
+                  Biografia
+                </label>
+                <textarea
+                  rows={3}
+                  value={profileForm.bio}
+                  onChange={(e) =>
+                    setProfileForm({ ...profileForm, bio: e.target.value })
+                  }
+                  className="w-full bg-[#1F1F1F] border border-[#303030] focus:border-[#DC143C] rounded-xl px-3 py-2 text-sm text-white outline-none resize-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-neutral-300 mb-1">
+                    Localização
+                  </label>
+                  <input
+                    type="text"
+                    value={profileForm.location}
+                    onChange={(e) =>
+                      setProfileForm({ ...profileForm, location: e.target.value })
+                    }
+                    className="w-full bg-[#1F1F1F] border border-[#303030] focus:border-[#DC143C] rounded-xl px-3 py-2 text-sm text-white outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-neutral-300 mb-1">
+                    Link / Destaque
+                  </label>
+                  <input
+                    type="text"
+                    value={profileForm.website}
+                    onChange={(e) =>
+                      setProfileForm({ ...profileForm, website: e.target.value })
+                    }
+                    className="w-full bg-[#1F1F1F] border border-[#303030] focus:border-[#DC143C] rounded-xl px-3 py-2 text-sm text-white outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-neutral-300 mb-1">
+                  URL da Foto de Perfil (Avatar)
+                </label>
+                <input
+                  type="url"
+                  value={profileForm.avatar}
+                  onChange={(e) =>
+                    setProfileForm({ ...profileForm, avatar: e.target.value })
+                  }
+                  className="w-full bg-[#1F1F1F] border border-[#303030] focus:border-[#DC143C] rounded-xl px-3 py-2 text-xs text-white outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-neutral-300 mb-1">
+                  URL da Foto de Capa
+                </label>
+                <input
+                  type="url"
+                  value={profileForm.cover}
+                  onChange={(e) =>
+                    setProfileForm({ ...profileForm, cover: e.target.value })
+                  }
+                  className="w-full bg-[#1F1F1F] border border-[#303030] focus:border-[#DC143C] rounded-xl px-3 py-2 text-xs text-white outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-neutral-300 mb-1">
+                  Tags (separadas por vírgula)
+                </label>
+                <input
+                  type="text"
+                  value={profileForm.tagsText}
+                  onChange={(e) =>
+                    setProfileForm({ ...profileForm, tagsText: e.target.value })
+                  }
+                  className="w-full bg-[#1F1F1F] border border-[#303030] focus:border-[#DC143C] rounded-xl px-3 py-2 text-xs text-white outline-none"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-3 border-t border-[#262626]">
+                <button
+                  type="button"
+                  onClick={() => setIsEditProfileOpen(false)}
+                  className="px-4 py-2 rounded-xl bg-[#222] hover:bg-[#2C2C2C] text-xs font-semibold text-neutral-300"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#8B0000] to-[#DC143C] hover:from-[#A30000] hover:to-[#FF1E4B] text-xs font-bold text-white"
+                >
+                  Salvar Alterações
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL DE NOVO STORY */}
+      {showNewStoryModal && (
+        <div className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-md bg-[#161616] border border-[#2E2E2E] rounded-2xl p-6 shadow-2xl">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-base font-extrabold text-white">Novo Story na AURA</h3>
+              <button
+                type="button"
+                onClick={() => setShowNewStoryModal(false)}
+                className="text-neutral-400 hover:text-white"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <form onSubmit={handleCreateStory} className="space-y-3.5">
+              <div>
+                <label className="block text-xs font-semibold text-neutral-300 mb-1">
+                  URL da Imagem do Story
+                </label>
+                <input
+                  type="url"
+                  required
+                  value={newStoryImage}
+                  onChange={(e) => setNewStoryImage(e.target.value)}
+                  className="w-full bg-[#1F1F1F] border border-[#303030] focus:border-[#DC143C] rounded-xl px-3 py-2 text-xs text-white outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-neutral-300 mb-1">
+                  Legenda curta
+                </label>
+                <input
+                  type="text"
+                  placeholder="Ex: Noite intensa na AURA 🌶️"
+                  value={newStoryCaption}
+                  onChange={(e) => setNewStoryCaption(e.target.value)}
+                  className="w-full bg-[#1F1F1F] border border-[#303030] focus:border-[#DC143C] rounded-xl px-3 py-2 text-sm text-white outline-none"
+                />
+              </div>
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowNewStoryModal(false)}
+                  className="px-4 py-2 rounded-xl bg-[#222] text-xs font-semibold text-neutral-300"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-xl bg-[#8B0000] hover:bg-[#DC143C] text-xs font-bold text-white"
+                >
+                  Publicar Story
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* VISUALIZADOR DE STORY */}
+      {activeStory && activeStoryAuthor && (
+        <div className="fixed inset-0 z-[70] bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="w-full max-w-md bg-[#141414] border border-[#2E2E2E] rounded-2xl overflow-hidden shadow-2xl relative">
+            <div className="relative h-[460px]">
+              <img
+                src={activeStory.image}
+                alt={activeStory.caption}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/85" />
+
+              <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <img
+                    src={activeStoryAuthor.avatar}
+                    alt={activeStoryAuthor.name}
+                    className="w-9 h-9 rounded-full object-cover border-2 border-[#FF2E54]"
+                  />
+                  <div>
+                    <div className="text-xs font-bold text-white">
+                      {activeStoryAuthor.name}
+                    </div>
+                    <div className="text-[10px] text-neutral-300">
+                      {activeStory.time}
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setActiveStoryIndex(null)}
+                  className="p-1.5 rounded-full bg-black/60 text-white hover:bg-black"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {activeStoryIndex > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setActiveStoryIndex((i) => i - 1)}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 hover:bg-black flex items-center justify-center text-white"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+              )}
+
+              {activeStoryIndex < stories.length - 1 && (
+                <button
+                  type="button"
+                  onClick={() => setActiveStoryIndex((i) => i + 1)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 hover:bg-black flex items-center justify-center text-white"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              )}
+
+              <div className="absolute bottom-3 left-3 right-3">
+                <p className="text-sm font-semibold text-white mb-2.5">
+                  {activeStory.caption}
+                </p>
+                {activeStoryAuthor.id !== currentUser.id && (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (!storyReply.trim()) return;
+                      sendMessageTo(
+                        activeStoryAuthor.id,
+                        `Respondeu ao Story: "${storyReply.trim()}"`
+                      );
+                      setStoryReply("");
+                      setActiveStoryIndex(null);
+                      openChatWith(activeStoryAuthor.id);
+                      triggerToast(`Resposta enviada para ${activeStoryAuthor.name}!`);
+                    }}
+                    className="flex items-center gap-2"
+                  >
+                    <input
+                      type="text"
+                      placeholder={`Responder a ${activeStoryAuthor.name.split(" ")[0]}...`}
+                      value={storyReply}
+                      onChange={(e) => setStoryReply(e.target.value)}
+                      className="flex-1 bg-black/70 border border-white/20 rounded-full px-3.5 py-2 text-xs text-white outline-none"
+                    />
+                    <button
+                      type="submit"
+                      className="p-2 rounded-full bg-[#DC143C] text-white"
+                    >
+                      <Send className="w-3.5 h-3.5" />
+                    </button>
+                  </form>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
